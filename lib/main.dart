@@ -11,32 +11,106 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        // appBar: AppBar(
-        //   title: Text('title'),
-        // ),
-        body: Center(
-          child: Image(image: AssetImage('assets/calil_logo.png')),
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              fit: BoxFit.cover,
+              image: AssetImage('assets/home.png'),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Container(
+                margin: EdgeInsets.fromLTRB(0, 140, 0, 100),
+                child: Image.asset('assets/calil_logo.png'),
               ),
-              label: 'ホーム',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.local_library),
-              label: '図書館',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.menu_book_sharp),
-              label: '本',
-            ),
-          ],
-          // currentIndex: , // 지정 인덱스로 이동
-          selectedItemColor: Colors.blue,
-          // onTap: _onItemTapped, // 선언했던 onItemTapped
+              Wrap(
+                alignment: WrapAlignment.spaceEvenly,
+                direction: Axis.horizontal,
+                runSpacing: 15,
+                children: [
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      backgroundColor: Color(0xff00b8ee),
+                    ),
+                    onPressed: () {},
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/library.png',
+                          width: 100,
+                          height: 100,
+                          color: Colors.white,
+                        ),
+                        Text('図書館', style: TextStyle(fontSize: 25)),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      backgroundColor: Color(0xff00b8ee),
+                    ),
+                    onPressed: () {},
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/book.png',
+                          width: 100,
+                          height: 100,
+                          color: Colors.white,
+                        ),
+                        Text('本', style: TextStyle(fontSize: 25)),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      backgroundColor: Color(0xff00b8ee),
+                    ),
+                    onPressed: () {},
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/bookmark.png',
+                          width: 100,
+                          height: 100,
+                          color: Colors.white,
+                        ),
+                        Text('お気入り', style: TextStyle(fontSize: 25)),
+                      ],
+                    ),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
+                      backgroundColor: Color(0xff00b8ee),
+                    ),
+                    onPressed: () {},
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Image.asset(
+                          'assets/settings.png',
+                          width: 100,
+                          height: 100,
+                          color: Colors.white,
+                        ),
+                        Text('設定', style: TextStyle(fontSize: 25)),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
