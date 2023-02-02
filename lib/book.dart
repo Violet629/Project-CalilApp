@@ -6,6 +6,8 @@ class book extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var inputData = "";
+
     return Scaffold(
       appBar: AppBar(
         title: Text("本を探す"),
@@ -14,22 +16,29 @@ class book extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          // mainAxisAlignment: MainAxisAlignment.center,
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 5),
+              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
               child: TextField(
+                style: TextStyle(fontSize: 20),
+                onChanged: (value) {
+                  inputData = value;
+                  // print(inputData);
+                },
+                onSubmitted: (context) {
+                  print(inputData);
+                },
                 decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.blue.shade100,
-                    prefixIcon: Icon(Icons.search),
-                    hintText: '検索',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide.none,
-                    )),
+                  filled: true,
+                  fillColor: Colors.blue.shade100,
+                  prefixIcon: Icon(Icons.search),
+                  hintText: '検索',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                    borderSide: BorderSide.none,
+                  ),
+                ),
               ),
             ),
             Container(
@@ -52,7 +61,7 @@ class book extends StatelessWidget {
               child: Wrap(
                 alignment: WrapAlignment.spaceEvenly,
                 direction: Axis.horizontal,
-                runSpacing: 30,
+                runSpacing: 20,
                 children: [
                   Row(
                     children: [
