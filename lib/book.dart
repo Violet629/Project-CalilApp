@@ -1,12 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:toggle_switch/toggle_switch.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
-class book extends StatelessWidget {
+class book extends StatefulWidget {
   const book({Key? key}) : super(key: key);
 
   @override
+  State<book> createState() => _bookState();
+}
+
+class _bookState extends State<book> {
+  @override
   Widget build(BuildContext context) {
     var inputData = "";
+    var searchOption = "";
+    var bookData = [];
+
+    setOption(payload) {
+      if (payload == 0) {
+        searchOption = "intitle";
+      } else if (payload == 1) {
+        searchOption = "inauthor";
+      } else if (payload == 2) {
+        searchOption = "isbn";
+      }
+      print(searchOption);
+    }
+
+    getBookData() async {
+      var result = await http.get(Uri.parse(
+          'https://www.googleapis.com/books/v1/volumes?q=$searchOption:$inputData'));
+      setState(() {
+        bookData = jsonDecode(result.body);
+        print(bookData);
+      });
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -24,10 +53,9 @@ class book extends StatelessWidget {
                 style: TextStyle(fontSize: 20),
                 onChanged: (value) {
                   inputData = value;
-                  // print(inputData);
                 },
                 onSubmitted: (context) {
-                  print(inputData);
+                  getBookData();
                 },
                 decoration: InputDecoration(
                   filled: true,
@@ -51,7 +79,7 @@ class book extends StatelessWidget {
                 totalSwitches: 3,
                 labels: const ['タイトル', '著者名', 'ISBN'],
                 onToggle: (index) {
-                  print('switched to: $index');
+                  setOption(index);
                 },
               ),
             ),

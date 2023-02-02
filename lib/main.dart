@@ -11,12 +11,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(fontFamily: 'Reggae'), home: homeMenu());
+        // theme: ThemeData(fontFamily: 'Reggae'),
+        home: HomeMenu()
+    );
   }
 }
 
-class homeMenu extends StatelessWidget {
-  const homeMenu({Key? key}) : super(key: key);
+class HomeMenu extends StatelessWidget {
+  const HomeMenu({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
