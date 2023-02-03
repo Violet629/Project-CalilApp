@@ -33,7 +33,8 @@ class _bookState extends State<book> {
           'https://www.googleapis.com/books/v1/volumes?q=$searchOption:$inputData'));
       setState(() {
         bookData = [jsonDecode(result.body)];
-        print(bookData);
+        // print(bookData[0]['items'][0]['volumeInfo']['industryIdentifiers']);
+        print(bookData[0]['items'][0]['volumeInfo']['imageLinks']);
       });
     }
 
@@ -83,37 +84,39 @@ class _bookState extends State<book> {
                 },
               ),
             ),
-            ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 20,
-              itemBuilder: (BuildContext context, int index) {
-                return Row(
-                  children: [
-                    Expanded(
-                      flex: 5,
-                      child: Image.network(
-                        'http://books.google.com/books/content?id=VZKCzwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
-                        fit: BoxFit.cover,
+            Container(
+              child: ListView.builder(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: 20,
+                itemBuilder: (BuildContext context, int index) {
+                  return Row(
+                    children: [
+                      Expanded(
+                        flex: 5,
+                        child: Image.network(
+                          'http://books.google.com/books/content?id=VZKCzwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
-                    Expanded(
-                      flex: 5,
-                      child: Column(
-                        children: const [
-                          Text("title"),
-                          Text("著者名"),
-                          Text("ISBN"),
-                          Text("link"),
-                          Text("お気に入り"),
-                        ],
-                      ),
-                    )
-                  ],
-                );
-              },
-            ),
+                      Expanded(
+                        flex: 5,
+                        child: Column(
+                          children: const [
+                            Text("title"),
+                            Text("著者名"),
+                            Text("ISBN"),
+                            Text("link"),
+                            Text("お気に入り"),
+                          ],
+                        ),
+                      )
+                    ],
+                  );
+                },
+              ),
+            )
           ],
         ),
       ),
