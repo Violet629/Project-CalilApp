@@ -3,44 +3,49 @@ import 'package:toggle_switch/toggle_switch.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class book extends StatefulWidget {
-  const book({Key? key}) : super(key: key);
+class Book extends StatefulWidget {
+  const Book({Key? key}) : super(key: key);
 
   @override
-  State<book> createState() => _bookState();
+  State<Book> createState() => _BookState();
 }
 
-class _bookState extends State<book> {
+class _BookState extends State<Book> {
+  String key = "1024255125769444283";
+  String inputData = "";
+  String searchOption = "title";
+  List<dynamic> bookData = [];
+
+  setOption(payload) {
+    if (payload == 0) {
+      searchOption = "title";
+    } else if (payload == 1) {
+      searchOption = "author";
+    } else if (payload == 2) {
+      searchOption = "isbn";
+    }
+  }
+
+  getBookData() async {
+    var result = await http.get(Uri.parse(
+        'https://app.rakuten.co.jp/services/api/BooksBook/Search/20170404?applicationId=$key&$searchOption=$inputData'));
+    bookData.clear();
+    if (result.statusCode == 200) {
+      setState(() {
+        var result2 = [jsonDecode(result.body)];
+        bookData = result2[0]['Items'];
+        print(bookData[0]['Item']['largeImageUrl']);
+      });
+    } else {
+      bookData.clear();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // var key = "AIzaSyBanuYuNspsCt4DMFPIr4YeFBGtY_8usc8";
-    var inputData = "";
-    var searchOption = "";
-    var bookData = [];
-
-    setOption(payload) {
-      if (payload == 0) {
-        searchOption = "intitle";
-      } else if (payload == 1) {
-        searchOption = "inauthor";
-      } else if (payload == 2) {
-        searchOption = "isbn";
-      }
-    }
-
-    getBookData() async {
-      var result = await http.get(Uri.parse(
-          'https://www.googleapis.com/books/v1/volumes?q=$searchOption:$inputData'));
-      setState(() {
-        bookData = [jsonDecode(result.body)];
-        // print(bookData[0]['items'][0]['volumeInfo']['industryIdentifiers']);
-        print(bookData[0]['items'][0]['volumeInfo']['imageLinks']);
-      });
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("本を探す"),
+        title: Text('本を探す'),
         leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
         backgroundColor: Color(0xff00b8ee),
       ),
@@ -84,42 +89,90 @@ class _bookState extends State<book> {
                 },
               ),
             ),
-            Container(
-              child: ListView.builder(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: 20,
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    children: [
-                      Expanded(
-                        flex: 5,
-                        child: Image.network(
-                          'http://books.google.com/books/content?id=VZKCzwEACAAJ&printsec=frontcover&img=1&zoom=1&source=gbs_api',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      Expanded(
-                        flex: 5,
-                        child: Column(
-                          children: const [
-                            Text("title"),
-                            Text("著者名"),
-                            Text("ISBN"),
-                            Text("link"),
-                            Text("お気に入り"),
-                          ],
-                        ),
-                      )
-                    ],
-                  );
-                },
-              ),
-            )
+            BookList(bookData: bookData),
           ],
         ),
       ),
     );
+  }
+}
+
+class BookList extends StatelessWidget {
+  const BookList({Key? key, this.bookData}) : super(key: key);
+  final bookData;
+
+  @override
+  Widget build(BuildContext context) {
+    if (bookData.isNotEmpty) {
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 2.5),
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: bookData.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
+            decoration: BoxDecoration(
+                color: Colors.blue.shade100, border: Border.all(width: 1)),
+            child: Row(
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: Image.network(
+                    bookData[index]['Item']['largeImageUrl'],
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Expanded(
+                  flex: 5,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          bookData[index]['Item']['title'],
+                          style: TextStyle(fontSize: 22),
+                        ),
+                        // FittedBox(
+                        //   // fit: BoxFit.fitWidth,
+                        //   child: Text(
+                        //     bookData[index]['Item']['title'],
+                        //     style: TextStyle(fontSize: 24),
+                        //   ),
+                        // ),
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            bookData[index]['Item']['author'],
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            bookData[index]['Item']['isbn'],
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            bookData[index]['Item']['salesDate'],
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
+      );
+    } else {
+      return Text("探している本がありません。");
+    }
   }
 }

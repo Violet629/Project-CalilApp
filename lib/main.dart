@@ -70,7 +70,7 @@ class HomeMenu extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => book()),
+                      MaterialPageRoute(builder: (context) => Book()),
                     );
                   },
                   child: Column(
