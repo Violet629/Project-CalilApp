@@ -111,55 +111,60 @@ class BookList extends StatelessWidget {
         itemCount: bookData.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.fromLTRB(0, 4, 0, 4),
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
             decoration: BoxDecoration(
-                color: Colors.blue.shade100, border: Border.all(width: 1)),
+              border: Border(
+                bottom: BorderSide(color: Color(0x66000000)),
+              ),
+            ),
             child: Row(
               children: [
                 Expanded(
-                  flex: 5,
-                  child: Image.network(
-                    bookData[index]['Item']['largeImageUrl'],
-                    fit: BoxFit.cover,
+                  flex: 2,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 1,
+                      ),
+                    ),
+                    child: Image.network(
+                      bookData[index]['Item']['largeImageUrl'],
+                    ),
                   ),
                 ),
                 Expanded(
-                  flex: 5,
+                  flex: 3,
                   child: Container(
                     padding: EdgeInsets.symmetric(horizontal: 4),
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      // mainAxisAlignment: MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
                           bookData[index]['Item']['title'],
-                          style: TextStyle(fontSize: 22),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16),
                         ),
-                        // FittedBox(
-                        //   // fit: BoxFit.fitWidth,
-                        //   child: Text(
-                        //     bookData[index]['Item']['title'],
-                        //     style: TextStyle(fontSize: 24),
-                        //   ),
-                        // ),
                         FittedBox(
                           fit: BoxFit.fitWidth,
                           child: Text(
                             bookData[index]['Item']['author'],
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: 14),
                           ),
                         ),
-                        FittedBox(
-                          fit: BoxFit.fitWidth,
+                        Opacity(
+                            opacity: 0.7,
+                            child: Text(
+                              '発売日 | ${bookData[index]['Item']['salesDate']}',
+                              style: TextStyle(fontSize: 14),
+                            )),
+                        Opacity(
+                          opacity: 0.7,
                           child: Text(
-                            bookData[index]['Item']['isbn'],
-                            style: TextStyle(fontSize: 20),
-                          ),
-                        ),
-                        FittedBox(
-                          fit: BoxFit.fitWidth,
-                          child: Text(
-                            bookData[index]['Item']['salesDate'],
-                            style: TextStyle(fontSize: 20),
+                            'ISBN | ${bookData[index]['Item']['isbn']}',
+                            style: TextStyle(fontSize: 14),
                           ),
                         ),
                       ],
