@@ -45,9 +45,13 @@ class _BookState extends State<Book> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('本を探す'),
-        leading: IconButton(icon: Icon(Icons.menu), onPressed: () {}),
-        backgroundColor: Color(0xff00b8ee),
+        title: Image.asset(
+          'assets/calil_logo_black.png',
+          width: 170,
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.lightBlueAccent,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -111,8 +115,9 @@ class BookList extends StatelessWidget {
         itemCount: bookData.length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            margin: EdgeInsets.fromLTRB(0, 20, 0, 0),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            height: 250,
             decoration: BoxDecoration(
               border: Border(
                 bottom: BorderSide(color: Color(0x66000000)),
@@ -136,11 +141,11 @@ class BookList extends StatelessWidget {
                 Expanded(
                   flex: 3,
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 4),
+                    padding: EdgeInsets.fromLTRB(15, 0, 5, 0),
                     child: Column(
                       // mainAxisAlignment: MainAxisAlignment.end,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      // mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
                         Text(
                           bookData[index]['Item']['title'],
