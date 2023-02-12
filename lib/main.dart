@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kariru/book.dart';
 import 'package:kariru/library.dart';
-import 'package:kariru/library_gps.dart';
+import 'package:kariru/libraryGps.dart';
 
 void main() {
   runApp(const MyApp());
@@ -53,7 +53,7 @@ class _HomeMenuState extends State<HomeMenu> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Container(
-              margin: EdgeInsets.fromLTRB(0, 140, 0, 100),
+              margin: EdgeInsets.fromLTRB(0, 120, 0, 130),
               child: Image.asset('assets/calil_logo.png'),
             ),
             Menu(libraryMenu: libraryMenu, setLibraryMenu: setLibraryMenu),
@@ -221,7 +221,7 @@ class Menu extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Library_gps()),
+                MaterialPageRoute(builder: (context) => LibraryGps()),
               );
             },
             child: SizedBox(
