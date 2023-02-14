@@ -1,8 +1,8 @@
-//test
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
-import 'package:kariru/libraryCiry.dart';
+import 'package:kariru/libraryCity.dart';
+import 'package:provider/provider.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -57,12 +57,11 @@ class _LibraryState extends State<Library> {
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 2.5),
         shrinkWrap: true,
-        // physics: const NeverScrollableScrollPhysics(),
         itemCount: pref[0].length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             margin: EdgeInsets.fromLTRB(0, 1, 0, 1),
-            // padding: EdgeInsets.fromLTRB(0, 0, 0, 0.5),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0.5),
             child: Column(
               children: [
                 ElevatedButton(
@@ -76,7 +75,7 @@ class _LibraryState extends State<Library> {
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              LibraryCity(prefNum: prefNum,pref:pref)),
+                              LibraryCity(prefNum: prefNum, pref: pref)),
                     );
                   },
                   child: Text(

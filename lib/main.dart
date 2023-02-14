@@ -1,11 +1,11 @@
-//test
 import 'package:flutter/material.dart';
 import 'package:kariru/book.dart';
 import 'package:kariru/library.dart';
 import 'package:kariru/libraryGps.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(create: (c) => Store1(), child: const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -17,6 +17,10 @@ class MyApp extends StatelessWidget {
         // theme: ThemeData(fontFamily: 'Reggae'),
         home: HomeMenu());
   }
+}
+
+class Store1 extends ChangeNotifier {
+  var name = 'john kim';
 }
 
 class HomeMenu extends StatefulWidget {

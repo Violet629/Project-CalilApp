@@ -1,8 +1,6 @@
-//test
 import 'package:flutter/material.dart';
-
-// import 'dart:convert';
-// import 'package:flutter/services.dart';
+import 'package:kariru/resultLibrary.dart';
+import 'package:provider/provider.dart';
 
 class LibraryCity extends StatefulWidget {
   const LibraryCity({Key? key, this.prefNum, this.pref}) : super(key: key);
@@ -14,6 +12,15 @@ class LibraryCity extends StatefulWidget {
 }
 
 class _LibraryCityState extends State<LibraryCity> {
+  String cityName = "";
+
+  setCityName(payload) {
+    setState(() {
+      cityName = payload;
+      print(cityName);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,12 +36,11 @@ class _LibraryCityState extends State<LibraryCity> {
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 2.5),
         shrinkWrap: true,
-        // physics: const NeverScrollableScrollPhysics(),
         itemCount: widget.pref[0][widget.prefNum]['city'].length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             margin: EdgeInsets.fromLTRB(0, 1, 0, 1),
-            // padding: EdgeInsets.fromLTRB(0, 0, 0, 0.5),
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0.5),
             child: Column(
               children: [
                 ElevatedButton(
@@ -42,7 +48,16 @@ class _LibraryCityState extends State<LibraryCity> {
                     // primary: colorList[index % colorList.length],
                     minimumSize: const Size.fromHeight(50), // NEW
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    setCityName(
+                        widget.pref[0][widget.prefNum]["city"][index]['city']);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ResultLibrary(
+                              cityName: cityName)),
+                    );
+                  },
                   child: Text(
                     widget.pref[0][widget.prefNum]["city"][index]['city'],
                     style: TextStyle(fontSize: 20),
