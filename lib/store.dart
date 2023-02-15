@@ -5,7 +5,6 @@ import 'dart:convert';
 class Store with ChangeNotifier {
   String perfName = "";
   String cityName = "";
-  String key = "419e52784761e9f60fa6683a2f28e41e";
 
   void setPerf(payload) {
     perfName = payload;

@@ -20,8 +20,6 @@ class _ResultLibraryState extends State<ResultLibrary> {
   List<dynamic> librayData = [];
 
   getLibraryData() async {
-    print(widget.perfName);
-    print(widget.cityName);
     var result = await http.get(Uri.parse(
         'https://api.calil.jp/library?appkey=$key&pref=${widget.perfName}&city=${widget.cityName}&format=json&callback=&limit=1'));
     librayData.clear();
@@ -55,9 +53,11 @@ class _ResultLibraryState extends State<ResultLibrary> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlueAccent,
       ),
-      body: Row(
+      body: Wrap(
         children: [
-          Text("data"),
+          Text(librayData[0]['formal']),
+          Text(librayData[0]['tel']),
+          Text(librayData[0]['address'])
         ],
       ),
     );
