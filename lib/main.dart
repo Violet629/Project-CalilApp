@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:kariru/book.dart';
 import 'package:kariru/library.dart';
 import 'package:kariru/libraryGps.dart';
+import 'package:kariru/store.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  runApp(ChangeNotifierProvider(create: (c) => Store1(), child: const MyApp()));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -13,14 +14,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<Store>(
+          create: (context) => Store(),
+        ),
+      ],
+      child: MaterialApp(
         // theme: ThemeData(fontFamily: 'Reggae'),
-        home: HomeMenu());
+        home: HomeMenu(),
+      ),
+    );
   }
-}
-
-class Store1 extends ChangeNotifier {
-  var name = 'john kim';
 }
 
 class HomeMenu extends StatefulWidget {

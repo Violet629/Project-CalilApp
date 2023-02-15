@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:provider/provider.dart';
+
+// import 'package:provider/provider.dart';
+// import 'package:kariru/store.dart';
 
 class ResultLibrary extends StatefulWidget {
-  const ResultLibrary({Key? key, this.cityName}) : super(key: key);
+  const ResultLibrary({Key? key, this.perfName, this.cityName})
+      : super(key: key);
+  final perfName;
   final cityName;
 
   @override
@@ -15,15 +19,17 @@ class _ResultLibraryState extends State<ResultLibrary> {
   String key = "419e52784761e9f60fa6683a2f28e41e";
   List<dynamic> librayData = [];
 
-  getBookData() async {
+  getLibraryData() async {
+    print(widget.perfName);
+    print(widget.cityName);
     var result = await http.get(Uri.parse(
-        'https://api.calil.jp/library?appkey=$key&format=json&callback=&city=${widget.cityName}'));
+        'https://api.calil.jp/library?appkey=$key&pref=${widget.perfName}&city=${widget.cityName}&format=json&callback=&limit=1'));
     librayData.clear();
     if (result.statusCode == 200) {
       setState(() {
         var result2 = [jsonDecode(result.body)];
-        // librayData = result2[0]['Items'];
-        print(result2);
+        librayData = result2[0];
+        print(librayData);
       });
     } else {
       librayData.clear();
@@ -33,11 +39,12 @@ class _ResultLibraryState extends State<ResultLibrary> {
   @override
   void initState() {
     super.initState();
-    getBookData();
+    getLibraryData();
   }
 
   @override
   Widget build(BuildContext context) {
+    // final Store store = Provider.of<Store>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -48,7 +55,11 @@ class _ResultLibraryState extends State<ResultLibrary> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlueAccent,
       ),
-      body: Text("context.watch<Store1>().name"),
+      body: Row(
+        children: [
+          Text("data"),
+        ],
+      ),
     );
   }
 }

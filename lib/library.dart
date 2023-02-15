@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:kariru/libraryCity.dart';
 import 'package:provider/provider.dart';
+import 'package:kariru/store.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class Library extends StatefulWidget {
 }
 
 class _LibraryState extends State<Library> {
-  List pref = [];
+  List prefCityList = [];
   String prefNum = "";
   List<Color> colorList = [
     Colors.lightBlueAccent,
@@ -21,7 +22,7 @@ class _LibraryState extends State<Library> {
     Colors.blueAccent,
   ];
 
-  setPrefName(payload) {
+  setPrefNum(payload) {
     setState(() {
       prefNum = payload;
       print(prefNum);
@@ -33,7 +34,7 @@ class _LibraryState extends State<Library> {
         await rootBundle.loadString('assets/pref_city.json');
     final data = await json.decode(response);
     setState(() {
-      pref = [data[0]];
+      prefCityList = [data[0]];
     });
   }
 
@@ -43,7 +44,9 @@ class _LibraryState extends State<Library> {
     readJson();
   }
 
+  @override
   Widget build(BuildContext context) {
+    final Store store = Provider.of<Store>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -57,7 +60,7 @@ class _LibraryState extends State<Library> {
       body: ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 2.5),
         shrinkWrap: true,
-        itemCount: pref[0].length,
+        itemCount: prefCityList[0].length,
         itemBuilder: (BuildContext context, int index) {
           return Container(
             margin: EdgeInsets.fromLTRB(0, 1, 0, 1),
@@ -70,16 +73,17 @@ class _LibraryState extends State<Library> {
                     minimumSize: const Size.fromHeight(50), // NEW
                   ),
                   onPressed: () {
-                    setPrefName('${index + 1}');
+                    setPrefNum('${index + 1}');
+                    store.setPerf(prefCityList[0]['${index + 1}']["name"]);
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) =>
-                              LibraryCity(prefNum: prefNum, pref: pref)),
+                          builder: (context) => LibraryCity(
+                              prefNum: prefNum, prefCityList: prefCityList)),
                     );
                   },
                   child: Text(
-                    pref[0]['${index + 1}']["name"],
+                    prefCityList[0]['${index + 1}']["name"],
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
