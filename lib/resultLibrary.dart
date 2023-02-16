@@ -67,9 +67,35 @@ class LibraryList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: libraryData.length,
         itemBuilder: (BuildContext context, int index) {
-          return Container(
-            child: Column(
-              children: [Text(index.toString())],
+          return SizedBox(
+            width: double.infinity,
+            child: Row(
+              children: [
+                Container(
+                  margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
+                  child: Image.asset(
+                    'assets/large.png',
+                    width: 60,
+                    height: 60,
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      libraryData[index]['formal'],
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    Opacity(
+                      opacity: 0.7,
+                      child: Text(
+                        libraryData[index]['pref'] + libraryData[index]['city'],
+                        style: TextStyle(fontSize: 14),
+                      ),
+                    ),
+                  ],
+                )
+              ],
             ),
           );
         },
