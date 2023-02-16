@@ -92,6 +92,9 @@ class Menu extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               primary: Color(0xff00b8ee),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             onPressed: () {
               setLibraryMenu();
@@ -117,6 +120,9 @@ class Menu extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               primary: Color(0xff00b8ee),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             onPressed: () {
               Navigator.push(
@@ -145,6 +151,9 @@ class Menu extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               primary: Color(0xff00b8ee),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             onPressed: () {},
             child: SizedBox(
@@ -168,6 +177,9 @@ class Menu extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               primary: Color(0xff00b8ee),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             onPressed: () {},
             child: SizedBox(
@@ -199,6 +211,9 @@ class Menu extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               primary: Color(0xff00b8ee),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             onPressed: () {
               Navigator.push(
@@ -227,6 +242,9 @@ class Menu extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               primary: Color(0xff00b8ee),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             onPressed: () {
               Navigator.push(
@@ -255,6 +273,9 @@ class Menu extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               primary: Color(0xff00b8ee),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             onPressed: () {
               setLibraryMenu();
@@ -280,6 +301,9 @@ class Menu extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.fromLTRB(30, 20, 30, 20),
               primary: Color(0xff00b8ee),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
             ),
             onPressed: () {},
             child: SizedBox(

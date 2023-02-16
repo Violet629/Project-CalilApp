@@ -17,20 +17,19 @@ class ResultLibrary extends StatefulWidget {
 
 class _ResultLibraryState extends State<ResultLibrary> {
   String key = "419e52784761e9f60fa6683a2f28e41e";
-  List<dynamic> librayData = [];
+  List<dynamic> libraryData = [];
 
   getLibraryData() async {
     var result = await http.get(Uri.parse(
-        'https://api.calil.jp/library?appkey=$key&pref=${widget.perfName}&city=${widget.cityName}&format=json&callback=&limit=1'));
-    librayData.clear();
+        'https://api.calil.jp/library?appkey=$key&pref=${widget.perfName}&city=${widget.cityName}&format=json&callback='));
     if (result.statusCode == 200) {
       setState(() {
         var result2 = [jsonDecode(result.body)];
-        librayData = result2[0];
-        print(librayData);
+        libraryData = result2[0];
+        print(libraryData);
       });
     } else {
-      librayData.clear();
+      libraryData.clear();
     }
   }
 
@@ -42,24 +41,46 @@ class _ResultLibraryState extends State<ResultLibrary> {
 
   @override
   Widget build(BuildContext context) {
-    // final Store store = Provider.of<Store>(context, listen: true);
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          'assets/calil_logo_black.png',
-          width: 170,
+        appBar: AppBar(
+          title: Image.asset(
+            'assets/calil_logo_black.png',
+            width: 170,
+          ),
+          centerTitle: true,
+          automaticallyImplyLeading: false,
+          backgroundColor: Colors.lightBlueAccent,
         ),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.lightBlueAccent,
-      ),
-      body: Wrap(
-        children: [
-          Text(librayData[0]['formal']),
-          Text(librayData[0]['tel']),
-          Text(librayData[0]['address'])
-        ],
-      ),
-    );
+        body: LibraryList(libraryData: libraryData));
+  }
+}
+
+class LibraryList extends StatelessWidget {
+  const LibraryList({Key? key, this.libraryData}) : super(key: key);
+  final libraryData;
+
+  @override
+  Widget build(BuildContext context) {
+    if (libraryData.isNotEmpty) {
+      return ListView.builder(
+        padding: const EdgeInsets.symmetric(horizontal: 2.5),
+        shrinkWrap: true,
+        itemCount: libraryData.length,
+        itemBuilder: (BuildContext context, int index) {
+          return Container(
+            child: Column(
+              children: [Text(index.toString())],
+            ),
+          );
+        },
+      );
+    } else {
+      return Container(
+        alignment: Alignment.center,
+        child: const CircularProgressIndicator(
+          color: Colors.lightBlueAccent,
+        ),
+      );
+    }
   }
 }
