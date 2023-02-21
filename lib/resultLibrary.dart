@@ -67,45 +67,53 @@ class LibraryList extends StatelessWidget {
         shrinkWrap: true,
         itemCount: libraryData.length,
         itemBuilder: (BuildContext context, int index) {
-          return SizedBox(
-            width: double.infinity,
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 0,
-                  child: Container(
-                    margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
-                    child: Image.asset(
-                      'assets/${libraryData[index]['category']}.png',
-                      width: 60,
-                      height: 60,
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LibraryDetail()),
+              );
+            },
+            child: SizedBox(
+              width: double.infinity,
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 0,
+                    child: Container(
+                      margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
+                      child: Image.asset(
+                        'assets/${libraryData[index]['category']}.png',
+                        width: 60,
+                        height: 60,
+                      ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 1,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      FittedBox(
-                        fit: BoxFit.fitWidth,
-                        child: Text(
-                          libraryData[index]['formal'],
-                          style: TextStyle(fontSize: 18),
+                  Expanded(
+                    flex: 1,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.fitWidth,
+                          child: Text(
+                            libraryData[index]['formal'],
+                            style: TextStyle(fontSize: 18),
+                          ),
                         ),
-                      ),
-                      Opacity(
-                        opacity: 0.7,
-                        child: Text(
-                          libraryData[index]['pref'] +
-                              libraryData[index]['city'],
-                          style: TextStyle(fontSize: 14),
+                        Opacity(
+                          opacity: 0.7,
+                          child: Text(
+                            libraryData[index]['pref'] +
+                                libraryData[index]['city'],
+                            style: TextStyle(fontSize: 14),
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         },
@@ -118,5 +126,25 @@ class LibraryList extends StatelessWidget {
         ),
       );
     }
+  }
+}
+
+class LibraryDetail extends StatelessWidget {
+  const LibraryDetail({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Image.asset(
+          'assets/calil_logo_black.png',
+          width: 170,
+        ),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.lightBlueAccent,
+      ),
+      body: Text("detail"),
+    );
   }
 }
