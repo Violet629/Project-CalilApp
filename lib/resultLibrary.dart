@@ -71,29 +71,39 @@ class LibraryList extends StatelessWidget {
             width: double.infinity,
             child: Row(
               children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
-                  child: Image.asset(
-                    'assets/large.png',
-                    width: 60,
-                    height: 60,
+                Expanded(
+                  flex: 0,
+                  child: Container(
+                    margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
+                    child: Image.asset(
+                      'assets/${libraryData[index]['category']}.png',
+                      width: 60,
+                      height: 60,
+                    ),
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      libraryData[index]['formal'],
-                      style: TextStyle(fontSize: 18),
-                    ),
-                    Opacity(
-                      opacity: 0.7,
-                      child: Text(
-                        libraryData[index]['pref'] + libraryData[index]['city'],
-                        style: TextStyle(fontSize: 14),
+                Expanded(
+                  flex: 1,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      FittedBox(
+                        fit: BoxFit.fitWidth,
+                        child: Text(
+                          libraryData[index]['formal'],
+                          style: TextStyle(fontSize: 18),
+                        ),
                       ),
-                    ),
-                  ],
+                      Opacity(
+                        opacity: 0.7,
+                        child: Text(
+                          libraryData[index]['pref'] +
+                              libraryData[index]['city'],
+                          style: TextStyle(fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
                 )
               ],
             ),
