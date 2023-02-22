@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-// import 'package:provider/provider.dart';
-// import 'package:kariru/store.dart';
+import 'package:url_launcher/link.dart';
 
 class ResultLibrary extends StatefulWidget {
   const ResultLibrary({Key? key, this.perfName, this.cityName})
@@ -175,9 +173,26 @@ class LibraryDetail extends StatelessWidget {
             libraryData[index]['tel'],
             style: TextStyle(fontSize: 18),
           ),
-          Text(
-            libraryData[index]['url_pc'],
-            style: TextStyle(fontSize: 18),
+          Link(
+            // 開きたいWebページのURLを指定
+            uri: Uri.parse('${libraryData[index]['url_pc']}'),
+            // targetについては後述
+            target: LinkTarget.blank,
+            builder: (BuildContext ctx, FollowLink? openLink) {
+              return TextButton(
+                onPressed: openLink,
+                child: const Text(
+                  'Webサイト',
+                  style: TextStyle(fontSize: 18),
+                ),
+                style: ButtonStyle(
+                  padding: MaterialStateProperty.all(EdgeInsets.zero),
+                  // minimumSize:
+                  //     MaterialStateProperty.all(Size.zero),
+                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                ),
+              );
+            },
           ),
         ],
       ),
