@@ -42,16 +42,19 @@ class _ResultLibraryState extends State<ResultLibrary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Image.asset(
-            'assets/calil_logo_black.png',
-            width: 170,
-          ),
-          centerTitle: true,
-          automaticallyImplyLeading: false,
-          backgroundColor: Colors.lightBlueAccent,
+      appBar: AppBar(
+        title: Image.asset(
+          'assets/calil_logo_black.png',
+          width: 170,
         ),
-        body: LibraryList(libraryData: libraryData));
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+        backgroundColor: Colors.lightBlueAccent,
+      ),
+      body: LibraryList(
+        libraryData: libraryData,
+      ),
+    );
   }
 }
 
@@ -71,7 +74,10 @@ class LibraryList extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => LibraryDetail()),
+                MaterialPageRoute(
+                  builder: (context) =>
+                      LibraryDetail(libraryData: libraryData, index: index),
+                ),
               );
             },
             child: SizedBox(
@@ -130,7 +136,10 @@ class LibraryList extends StatelessWidget {
 }
 
 class LibraryDetail extends StatelessWidget {
-  const LibraryDetail({Key? key}) : super(key: key);
+  const LibraryDetail({Key? key, this.libraryData, this.index})
+      : super(key: key);
+  final libraryData;
+  final index;
 
   @override
   Widget build(BuildContext context) {
@@ -144,7 +153,34 @@ class LibraryDetail extends StatelessWidget {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlueAccent,
       ),
-      body: Text("detail"),
+      body: Column(
+        children: [
+          Container(
+            width: double.infinity,
+            height: 300,
+            child: Image.asset(
+              'assets/libraryImg/library${index % 10 + 1}.jpg',
+              fit: BoxFit.cover,
+            ),
+          ),
+          Text(
+            libraryData[index]['formal'],
+            style: TextStyle(fontSize: 18),
+          ),
+          Text(
+            libraryData[index]['address'],
+            style: TextStyle(fontSize: 18),
+          ),
+          Text(
+            libraryData[index]['tel'],
+            style: TextStyle(fontSize: 18),
+          ),
+          Text(
+            libraryData[index]['url_pc'],
+            style: TextStyle(fontSize: 18),
+          ),
+        ],
+      ),
     );
   }
 }
