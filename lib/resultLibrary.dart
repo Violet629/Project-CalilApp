@@ -78,8 +78,17 @@ class LibraryList extends StatelessWidget {
                 ),
               );
             },
-            child: SizedBox(
+            child: Container(
               width: double.infinity,
+              margin: EdgeInsets.fromLTRB(0, 5, 0, 0),
+              padding: EdgeInsets.fromLTRB(0, 0, 0, 5),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: Color(0x66000000),
+                  ),
+                ),
+              ),
               child: Row(
                 children: [
                   Expanded(
@@ -153,7 +162,7 @@ class LibraryDetail extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             height: 300,
             child: Image.asset(
@@ -161,38 +170,69 @@ class LibraryDetail extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          Text(
-            libraryData[index]['formal'],
-            style: TextStyle(fontSize: 18),
-          ),
-          Text(
-            libraryData[index]['address'],
-            style: TextStyle(fontSize: 18),
-          ),
-          Text(
-            libraryData[index]['tel'],
-            style: TextStyle(fontSize: 18),
-          ),
-          Link(
-            // 開きたいWebページのURLを指定
-            uri: Uri.parse('${libraryData[index]['url_pc']}'),
-            // targetについては後述
-            target: LinkTarget.blank,
-            builder: (BuildContext ctx, FollowLink? openLink) {
-              return TextButton(
-                onPressed: openLink,
-                child: const Text(
-                  'Webサイト',
+          Container(
+            padding: EdgeInsets.fromLTRB(15, 1, 15, 5),
+            height: 150,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  libraryData[index]['formal'],
+                  style: TextStyle(fontSize: 22),
+                ),
+                Text(
+                  libraryData[index]['address'],
                   style: TextStyle(fontSize: 18),
                 ),
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.zero),
-                  // minimumSize:
-                  //     MaterialStateProperty.all(Size.zero),
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                Opacity(
+                  opacity: 0.7,
+                  child: Text(
+                    "〒" +
+                        libraryData[index]['post'] +
+                        " / " +
+                        libraryData[index]['tel'],
+                    style: TextStyle(fontSize: 16),
+                  ),
                 ),
-              );
-            },
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 110,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Link(
+                  uri: Uri.parse('${libraryData[index]['url_pc']}'),
+                  target: LinkTarget.blank,
+                  builder: (BuildContext ctx, FollowLink? openLink) {
+                    return ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.lightBlueAccent,
+                        minimumSize: const Size(330, 50),
+                      ),
+                      onPressed: openLink,
+                      child: const Text(
+                        '公式ホームページ',
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    );
+                  },
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.lightBlueAccent,
+                    minimumSize: const Size(330, 50),
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    "お気に入り登録",
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

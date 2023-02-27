@@ -160,11 +160,12 @@ class BookList extends StatelessWidget {
                           ),
                         ),
                         Opacity(
-                            opacity: 0.7,
-                            child: Text(
-                              '発売日 | ${bookData[index]['Item']['salesDate']}',
-                              style: TextStyle(fontSize: 14),
-                            )),
+                          opacity: 0.7,
+                          child: Text(
+                            '発売日 | ${bookData[index]['Item']['salesDate']}',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ),
                         Opacity(
                           opacity: 0.7,
                           child: Text(
