@@ -124,7 +124,7 @@ class LibraryList extends StatelessWidget {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -199,7 +199,7 @@ class LibraryDetail extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 110,
+            height: 170,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -219,6 +219,17 @@ class LibraryDetail extends StatelessWidget {
                       ),
                     );
                   },
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.lightBlueAccent,
+                    minimumSize: const Size(330, 50),
+                  ),
+                  onPressed: () {},
+                  child: const Text(
+                    "Googleマップ",
+                    style: TextStyle(fontSize: 18),
+                  ),
                 ),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(

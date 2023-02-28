@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
+import 'package:kariru/resultLibrary.dart';
 import 'dart:convert';
+import 'package:url_launcher/link.dart';
 
 class LibraryGps extends StatefulWidget {
   const LibraryGps({Key? key}) : super(key: key);
@@ -57,6 +59,12 @@ class LibraryGpsState extends State<LibraryGps> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    getLocation();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -68,24 +76,11 @@ class LibraryGpsState extends State<LibraryGps> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlueAccent,
       ),
-      body: Column(
-        children: [
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              primary: Colors.lightBlueAccent,
-              minimumSize: const Size.fromHeight(50),
-            ),
-            onPressed: getLocation,
-            child: const Text(
-              "周りを検索",
-              style: TextStyle(fontSize: 20),
-            ),
-          ),
-        ],
-      ),
+      body: LibraryList(libraryData: libraryData),
     );
   }
 }
+
 // body: GoogleMap(
 //   mapType: MapType.hybrid,
 //   initialCameraPosition: _kGooglePlex,
