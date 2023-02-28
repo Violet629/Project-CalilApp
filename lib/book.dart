@@ -97,6 +97,18 @@ class _BookState extends State<Book> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        // currentIndex: _selectedIndex,
+        // onTap: _onItemTapped,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(icon: Icon(Icons.search), label: '地域'),
+          BottomNavigationBarItem(icon: Icon(Icons.location_on), label: '周を探す'),
+          BottomNavigationBarItem(icon: Icon(Icons.menu_book), label: '本'),
+          BottomNavigationBarItem(icon: Icon(Icons.bookmark), label: 'お気入り'),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: '設定'),
+        ],
+        type: BottomNavigationBarType.fixed,
+      ),
     );
   }
 }

@@ -6,7 +6,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:kariru/resultLibrary.dart';
 import 'dart:convert';
-import 'package:url_launcher/link.dart';
 
 class LibraryGps extends StatefulWidget {
   const LibraryGps({Key? key}) : super(key: key);
@@ -80,15 +79,3 @@ class LibraryGpsState extends State<LibraryGps> {
     );
   }
 }
-
-// body: GoogleMap(
-//   mapType: MapType.hybrid,
-//   initialCameraPosition: _kGooglePlex,
-//   onMapCreated: (GoogleMapController controller) {
-//     _controller.complete(controller);
-//   },
-// ),
-// static const CameraPosition _kGooglePlex = CameraPosition(
-//   target: LatLng(35.71574708017275, 139.6086487826241),
-//   zoom: 35,
-// );

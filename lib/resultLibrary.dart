@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/link.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ResultLibrary extends StatefulWidget {
   const ResultLibrary({Key? key, this.perfName, this.cityName})
@@ -245,8 +248,35 @@ class LibraryDetail extends StatelessWidget {
               ],
             ),
           ),
+          // SizedBox(child: Map()),
         ],
       ),
+    );
+  }
+}
+
+class Map extends StatefulWidget {
+  const Map({Key? key}) : super(key: key);
+
+  @override
+  State<Map> createState() => _MapState();
+}
+
+class _MapState extends State<Map> {
+  final Completer<GoogleMapController> _controller = Completer();
+  static const CameraPosition _kGooglePlex = CameraPosition(
+    target: LatLng(35.71574708017275, 139.6086487826241),
+    zoom: 35,
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return GoogleMap(
+      mapType: MapType.hybrid,
+      initialCameraPosition: _kGooglePlex,
+      onMapCreated: (GoogleMapController controller) {
+        _controller.complete(controller);
+      },
     );
   }
 }
