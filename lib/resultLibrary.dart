@@ -34,6 +34,20 @@ class _ResultLibraryState extends State<ResultLibrary> {
     }
   }
 
+  String geocode = "";
+  List geocodeSplit = [];
+  String latitude = "";
+  String longitude = "";
+
+  getGecode(payload) {
+    setState(() {
+      geocode = libraryData[payload]['geocode'];
+      geocodeSplit = geocode.split(',');
+      latitude = geocodeSplit[1];
+      longitude = geocodeSplit[0];
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -53,15 +67,26 @@ class _ResultLibraryState extends State<ResultLibrary> {
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: LibraryList(
-        libraryData: libraryData,
-      ),
+          libraryData: libraryData,
+          getGecode: getGecode,
+          latitude: latitude,
+          longitude: longitude),
     );
   }
 }
 
 class LibraryList extends StatelessWidget {
-  const LibraryList({Key? key, this.libraryData}) : super(key: key);
+  const LibraryList(
+      {Key? key,
+      this.libraryData,
+      this.getGecode,
+      this.latitude,
+      this.longitude})
+      : super(key: key);
   final libraryData;
+  final getGecode;
+  final latitude;
+  final longitude;
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +98,15 @@ class LibraryList extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
+              getGecode(index);
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) =>
-                      LibraryDetail(libraryData: libraryData, index: index),
+                  builder: (context) => LibraryDetail(
+                      libraryData: libraryData,
+                      index: index,
+                      latitude: latitude,
+                      longitude: longitude),
                 ),
               );
             },
@@ -145,12 +174,20 @@ class LibraryList extends StatelessWidget {
   }
 }
 
-class LibraryDetail extends StatelessWidget {
-  const LibraryDetail({Key? key, this.libraryData, this.index})
+class LibraryDetail extends StatefulWidget {
+  const LibraryDetail(
+      {Key? key, this.libraryData, this.index, this.latitude, this.longitude})
       : super(key: key);
   final libraryData;
   final index;
+  final latitude;
+  final longitude;
 
+  @override
+  State<LibraryDetail> createState() => _LibraryDetailState();
+}
+
+class _LibraryDetailState extends State<LibraryDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -166,11 +203,20 @@ class LibraryDetail extends StatelessWidget {
       body: Column(
         children: [
           SizedBox(
-            width: double.infinity,
             height: 300,
-            child: Image.asset(
-              'assets/libraryImg/library${index % 10 + 1}.jpg',
-              fit: BoxFit.cover,
+            child: GoogleMap(
+              initialCameraPosition: CameraPosition(
+                target: LatLng(double.parse(widget.latitude),
+                    double.parse(widget.longitude)),
+                zoom: 19,
+              ),
+              markers: {
+                Marker(
+                  markerId: const MarkerId("marker1"),
+                  position: LatLng(double.parse(widget.latitude),
+                      double.parse(widget.longitude)),
+                ),
+              },
             ),
           ),
           Container(
@@ -181,20 +227,20 @@ class LibraryDetail extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  libraryData[index]['formal'],
+                  widget.libraryData[widget.index]['formal'],
                   style: TextStyle(fontSize: 22),
                 ),
                 Text(
-                  libraryData[index]['address'],
+                  widget.libraryData[widget.index]['address'],
                   style: TextStyle(fontSize: 18),
                 ),
                 Opacity(
                   opacity: 0.7,
                   child: Text(
                     "〒" +
-                        libraryData[index]['post'] +
+                        widget.libraryData[widget.index]['post'] +
                         " / " +
-                        libraryData[index]['tel'],
+                        widget.libraryData[widget.index]['tel'],
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -207,7 +253,8 @@ class LibraryDetail extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Link(
-                  uri: Uri.parse('${libraryData[index]['url_pc']}'),
+                  uri: Uri.parse(
+                      '${widget.libraryData[widget.index]['url_pc']}'),
                   target: LinkTarget.blank,
                   builder: (BuildContext ctx, FollowLink? openLink) {
                     return ElevatedButton(
@@ -230,7 +277,7 @@ class LibraryDetail extends StatelessWidget {
                   ),
                   onPressed: () {},
                   child: const Text(
-                    "Googleマップ",
+                    "蔵書検索",
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
@@ -251,32 +298,6 @@ class LibraryDetail extends StatelessWidget {
           // SizedBox(child: Map()),
         ],
       ),
-    );
-  }
-}
-
-class Map extends StatefulWidget {
-  const Map({Key? key}) : super(key: key);
-
-  @override
-  State<Map> createState() => _MapState();
-}
-
-class _MapState extends State<Map> {
-  final Completer<GoogleMapController> _controller = Completer();
-  static const CameraPosition _kGooglePlex = CameraPosition(
-    target: LatLng(35.71574708017275, 139.6086487826241),
-    zoom: 35,
-  );
-
-  @override
-  Widget build(BuildContext context) {
-    return GoogleMap(
-      mapType: MapType.hybrid,
-      initialCameraPosition: _kGooglePlex,
-      onMapCreated: (GoogleMapController controller) {
-        _controller.complete(controller);
-      },
     );
   }
 }
