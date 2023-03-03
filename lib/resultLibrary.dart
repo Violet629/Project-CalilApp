@@ -30,22 +30,8 @@ class _ResultLibraryState extends State<ResultLibrary> {
         print(libraryData);
       });
     } else {
-      libraryData.clear();
+      libraryData.add("no");
     }
-  }
-
-  String geocode = "";
-  List geocodeSplit = [];
-  String latitude = "";
-  String longitude = "";
-
-  getGecode(payload) {
-    setState(() {
-      geocode = libraryData[payload]['geocode'];
-      geocodeSplit = geocode.split(',');
-      latitude = geocodeSplit[1];
-      longitude = geocodeSplit[0];
-    });
   }
 
   @override
@@ -67,26 +53,15 @@ class _ResultLibraryState extends State<ResultLibrary> {
         backgroundColor: Colors.lightBlueAccent,
       ),
       body: LibraryList(
-          libraryData: libraryData,
-          getGecode: getGecode,
-          latitude: latitude,
-          longitude: longitude),
+        libraryData: libraryData,
+      ),
     );
   }
 }
 
 class LibraryList extends StatelessWidget {
-  const LibraryList(
-      {Key? key,
-      this.libraryData,
-      this.getGecode,
-      this.latitude,
-      this.longitude})
-      : super(key: key);
+  const LibraryList({Key? key, this.libraryData}) : super(key: key);
   final libraryData;
-  final getGecode;
-  final latitude;
-  final longitude;
 
   @override
   Widget build(BuildContext context) {
@@ -98,15 +73,13 @@ class LibraryList extends StatelessWidget {
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              getGecode(index);
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => LibraryDetail(
-                      libraryData: libraryData,
-                      index: index,
-                      latitude: latitude,
-                      longitude: longitude),
+                    libraryData: libraryData,
+                    index: index,
+                  ),
                 ),
               );
             },
@@ -175,19 +148,37 @@ class LibraryList extends StatelessWidget {
 }
 
 class LibraryDetail extends StatefulWidget {
-  const LibraryDetail(
-      {Key? key, this.libraryData, this.index, this.latitude, this.longitude})
+  const LibraryDetail({Key? key, this.libraryData, this.index})
       : super(key: key);
   final libraryData;
   final index;
-  final latitude;
-  final longitude;
 
   @override
   State<LibraryDetail> createState() => _LibraryDetailState();
 }
 
 class _LibraryDetailState extends State<LibraryDetail> {
+  String geocode = "";
+  List geocodeSplit = [];
+  String latitude = "";
+  String longitude = "";
+
+  getGecode() {
+    setState(() {
+      geocode = widget.libraryData[widget.index]['geocode'];
+      geocodeSplit = geocode.split(',');
+      latitude = geocodeSplit[1];
+      longitude = geocodeSplit[0];
+      print(latitude + "," + longitude);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getGecode();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -206,15 +197,14 @@ class _LibraryDetailState extends State<LibraryDetail> {
             height: 300,
             child: GoogleMap(
               initialCameraPosition: CameraPosition(
-                target: LatLng(double.parse(widget.latitude),
-                    double.parse(widget.longitude)),
+                target: LatLng(double.parse(latitude), double.parse(longitude)),
                 zoom: 19,
               ),
               markers: {
                 Marker(
                   markerId: const MarkerId("marker1"),
-                  position: LatLng(double.parse(widget.latitude),
-                      double.parse(widget.longitude)),
+                  position:
+                      LatLng(double.parse(latitude), double.parse(longitude)),
                 ),
               },
             ),
@@ -295,7 +285,6 @@ class _LibraryDetailState extends State<LibraryDetail> {
               ],
             ),
           ),
-          // SizedBox(child: Map()),
         ],
       ),
     );
