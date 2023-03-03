@@ -1,6 +1,7 @@
-import 'dart:async';
+// import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:kariru/book.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/link.dart';
@@ -265,7 +266,12 @@ class _LibraryDetailState extends State<LibraryDetail> {
                     primary: Colors.lightBlueAccent,
                     minimumSize: const Size(330, 50),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Book()),
+                    );
+                  },
                   child: const Text(
                     "蔵書検索",
                     style: TextStyle(fontSize: 18),
