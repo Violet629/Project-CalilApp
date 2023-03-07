@@ -4,6 +4,8 @@ import 'package:kariru/library.dart';
 import 'package:kariru/libraryGps.dart';
 import 'package:kariru/store.dart';
 import 'package:provider/provider.dart';
+import 'package:kariru/bookMark.dart';
+import 'package:kariru/setting.dart';
 
 void main() {
   runApp(const MyApp());
@@ -36,20 +38,9 @@ class HomeMenu extends StatefulWidget {
 }
 
 class _HomeMenuState extends State<HomeMenu> {
-  var libraryMenu = false;
-
-  setLibraryMenu() {
-    setState(() {
-      if (libraryMenu == false) {
-        libraryMenu = true;
-      } else {
-        libraryMenu = false;
-      }
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    final Store store = Provider.of<Store>(context, listen: true);
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -80,9 +71,16 @@ class _HomeMenuState extends State<HomeMenu> {
                     ),
                   ),
                   onPressed: () {
+                    setState(
+                      () {
+                        store.setBottomNavIndex(0);
+                      },
+                    );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => Frame()),
+                      MaterialPageRoute(
+                        builder: (context) => Frame(),
+                      ),
                     );
                   },
                   child: SizedBox(
@@ -111,9 +109,14 @@ class _HomeMenuState extends State<HomeMenu> {
                     ),
                   ),
                   onPressed: () {
+                    setState(
+                      () {
+                        store.setBottomNavIndex(1);
+                      },
+                    );
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LibraryGps()),
+                      MaterialPageRoute(builder: (context) => Frame()),
                     );
                   },
                   child: SizedBox(
@@ -141,7 +144,17 @@ class _HomeMenuState extends State<HomeMenu> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(
+                      () {
+                        store.setBottomNavIndex(2);
+                      },
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Frame()),
+                    );
+                  },
                   child: SizedBox(
                     width: 110,
                     height: 130,
@@ -167,7 +180,17 @@ class _HomeMenuState extends State<HomeMenu> {
                       borderRadius: BorderRadius.circular(30),
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    setState(
+                      () {
+                        store.setBottomNavIndex(3);
+                      },
+                    );
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Frame()),
+                    );
+                  },
                   child: SizedBox(
                     width: 110,
                     height: 130,
@@ -202,14 +225,16 @@ class Frame extends StatefulWidget {
 }
 
 class _FrameState extends State<Frame> {
-  int _currentIndex = 0;
   List pageList = [
     Library(),
     LibraryGps(),
+    BookMark(),
+    Setting(),
   ];
 
   @override
   Widget build(BuildContext context) {
+    final Store store = Provider.of<Store>(context, listen: true);
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(
@@ -220,13 +245,13 @@ class _FrameState extends State<Frame> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlueAccent,
       ),
-      body: pageList[_currentIndex],
+      body: pageList[store.bottomNavIndex],
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        currentIndex: _currentIndex,
+        currentIndex: store.bottomNavIndex,
         onTap: (index) {
           setState(() {
-            _currentIndex = index;
+            store.setBottomNavIndex(index);
           });
         },
         items: const [

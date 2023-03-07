@@ -160,6 +160,7 @@ class _LibraryDetailState extends State<LibraryDetail> {
   List geocodeSplit = [];
   String latitude = "";
   String longitude = "";
+  int step = 0;
 
   getGecode() {
     setState(() {
