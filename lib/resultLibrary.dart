@@ -1,5 +1,3 @@
-// import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:kariru/book.dart';
 import 'package:http/http.dart' as http;
@@ -8,9 +6,9 @@ import 'package:url_launcher/link.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class ResultLibrary extends StatefulWidget {
-  const ResultLibrary({Key? key, this.perfName, this.cityName})
+  const ResultLibrary({Key? key, this.prefName, this.cityName})
       : super(key: key);
-  final perfName;
+  final prefName;
   final cityName;
 
   @override
@@ -23,7 +21,7 @@ class _ResultLibraryState extends State<ResultLibrary> {
 
   getLibraryData() async {
     var result = await http.get(Uri.parse(
-        'https://api.calil.jp/library?appkey=$key&pref=${widget.perfName}&city=${widget.cityName}&format=json&callback='));
+        'https://api.calil.jp/library?appkey=$key&pref=${widget.prefName}&city=${widget.cityName}&format=json&callback='));
     if (result.statusCode == 200) {
       setState(() {
         var result2 = [jsonDecode(result.body)];
@@ -44,15 +42,6 @@ class _ResultLibraryState extends State<ResultLibrary> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          'assets/calil_logo_black.png',
-          width: 170,
-        ),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.lightBlueAccent,
-      ),
       body: LibraryList(
         libraryData: libraryData,
       ),
@@ -60,29 +49,32 @@ class _ResultLibraryState extends State<ResultLibrary> {
   }
 }
 
-class LibraryList extends StatelessWidget {
+class LibraryList extends StatefulWidget {
   const LibraryList({Key? key, this.libraryData}) : super(key: key);
   final libraryData;
 
   @override
+  State<LibraryList> createState() => _LibraryListState();
+}
+
+class _LibraryListState extends State<LibraryList> {
+  int step = 0;
+  int libraryIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
-    if (libraryData.isNotEmpty) {
+    if (widget.libraryData.isNotEmpty && step == 0) {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 2.5),
         shrinkWrap: true,
-        itemCount: libraryData.length,
+        itemCount: widget.libraryData.length,
         itemBuilder: (BuildContext context, int index) {
           return GestureDetector(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => LibraryDetail(
-                    libraryData: libraryData,
-                    index: index,
-                  ),
-                ),
-              );
+              setState(() {
+                libraryIndex = index;
+                step++;
+              });
             },
             child: Container(
               width: double.infinity,
@@ -102,7 +94,7 @@ class LibraryList extends StatelessWidget {
                     child: Container(
                       margin: EdgeInsets.fromLTRB(5, 5, 10, 5),
                       child: Image.asset(
-                        'assets/${libraryData[index]['category']}.png',
+                        'assets/${widget.libraryData[index]['category']}.png',
                         width: 60,
                         height: 60,
                       ),
@@ -116,15 +108,15 @@ class LibraryList extends StatelessWidget {
                         FittedBox(
                           fit: BoxFit.fitWidth,
                           child: Text(
-                            libraryData[index]['formal'],
+                            widget.libraryData[index]['formal'],
                             style: TextStyle(fontSize: 18),
                           ),
                         ),
                         Opacity(
                           opacity: 0.7,
                           child: Text(
-                            libraryData[index]['pref'] +
-                                libraryData[index]['city'],
+                            widget.libraryData[index]['pref'] +
+                                widget.libraryData[index]['city'],
                             style: TextStyle(fontSize: 14),
                           ),
                         ),
@@ -136,6 +128,11 @@ class LibraryList extends StatelessWidget {
             ),
           );
         },
+      );
+    } else if (widget.libraryData.isNotEmpty && step == 1) {
+      return LibraryDetail(
+        libraryData: widget.libraryData,
+        libraryIndex: libraryIndex,
       );
     } else {
       return Container(
@@ -149,10 +146,10 @@ class LibraryList extends StatelessWidget {
 }
 
 class LibraryDetail extends StatefulWidget {
-  const LibraryDetail({Key? key, this.libraryData, this.index})
+  const LibraryDetail({Key? key, this.libraryData, this.libraryIndex})
       : super(key: key);
   final libraryData;
-  final index;
+  final libraryIndex;
 
   @override
   State<LibraryDetail> createState() => _LibraryDetailState();
@@ -166,7 +163,7 @@ class _LibraryDetailState extends State<LibraryDetail> {
 
   getGecode() {
     setState(() {
-      geocode = widget.libraryData[widget.index]['geocode'];
+      geocode = widget.libraryData[widget.libraryIndex]['geocode'];
       geocodeSplit = geocode.split(',');
       latitude = geocodeSplit[1];
       longitude = geocodeSplit[0];
@@ -183,15 +180,6 @@ class _LibraryDetailState extends State<LibraryDetail> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Image.asset(
-          'assets/calil_logo_black.png',
-          width: 170,
-        ),
-        centerTitle: true,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.lightBlueAccent,
-      ),
       body: Column(
         children: [
           SizedBox(
@@ -218,20 +206,20 @@ class _LibraryDetailState extends State<LibraryDetail> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
-                  widget.libraryData[widget.index]['formal'],
+                  widget.libraryData[widget.libraryIndex]['formal'],
                   style: TextStyle(fontSize: 22),
                 ),
                 Text(
-                  widget.libraryData[widget.index]['address'],
+                  widget.libraryData[widget.libraryIndex]['address'],
                   style: TextStyle(fontSize: 18),
                 ),
                 Opacity(
                   opacity: 0.7,
                   child: Text(
                     "〒" +
-                        widget.libraryData[widget.index]['post'] +
+                        widget.libraryData[widget.libraryIndex]['post'] +
                         " / " +
-                        widget.libraryData[widget.index]['tel'],
+                        widget.libraryData[widget.libraryIndex]['tel'],
                     style: TextStyle(fontSize: 16),
                   ),
                 ),
@@ -245,7 +233,7 @@ class _LibraryDetailState extends State<LibraryDetail> {
               children: [
                 Link(
                   uri: Uri.parse(
-                      '${widget.libraryData[widget.index]['url_pc']}'),
+                      '${widget.libraryData[widget.libraryIndex]['url_pc']}'),
                   target: LinkTarget.blank,
                   builder: (BuildContext ctx, FollowLink? openLink) {
                     return ElevatedButton(
