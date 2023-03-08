@@ -59,11 +59,18 @@ class LibraryList extends StatefulWidget {
 
 class _LibraryListState extends State<LibraryList> {
   int step = 0;
+  bool bookPage = false;
   int libraryIndex = 0;
+
+  setBookPage() {
+    setState(() {
+      bookPage = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.libraryData.isNotEmpty && step == 0) {
+    if (widget.libraryData.isNotEmpty && step == 0 && bookPage == false) {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 2.5),
         shrinkWrap: true,
@@ -129,11 +136,14 @@ class _LibraryListState extends State<LibraryList> {
           );
         },
       );
-    } else if (widget.libraryData.isNotEmpty && step == 1) {
+    } else if (widget.libraryData.isNotEmpty && step == 1 && bookPage == false) {
       return LibraryDetail(
         libraryData: widget.libraryData,
         libraryIndex: libraryIndex,
+        setBookPage: setBookPage,
       );
+    } else if (bookPage == true) {
+      return Book();
     } else {
       return Container(
         alignment: Alignment.center,
@@ -146,10 +156,12 @@ class _LibraryListState extends State<LibraryList> {
 }
 
 class LibraryDetail extends StatefulWidget {
-  const LibraryDetail({Key? key, this.libraryData, this.libraryIndex})
+  const LibraryDetail(
+      {Key? key, this.libraryData, this.libraryIndex, this.setBookPage})
       : super(key: key);
   final libraryData;
   final libraryIndex;
+  final setBookPage;
 
   @override
   State<LibraryDetail> createState() => _LibraryDetailState();
@@ -256,10 +268,7 @@ class _LibraryDetailState extends State<LibraryDetail> {
                     minimumSize: const Size(330, 50),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Book()),
-                    );
+                    widget.setBookPage();
                   },
                   child: const Text(
                     "蔵書検索",

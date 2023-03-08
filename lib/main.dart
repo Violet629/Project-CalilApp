@@ -8,7 +8,9 @@ import 'package:kariru/bookMark.dart';
 import 'package:kariru/setting.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    const MyApp(),
+  );
 }
 
 class MyApp extends StatelessWidget {
