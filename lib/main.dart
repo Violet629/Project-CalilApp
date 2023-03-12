@@ -113,6 +113,7 @@ class _HomeMenuState extends State<HomeMenu> {
                   onPressed: () {
                     setState(
                       () {
+                        store.plus2Step();
                         store.setBottomNavIndex(1);
                       },
                     );
@@ -246,6 +247,16 @@ class _FrameState extends State<Frame> {
         centerTitle: true,
         automaticallyImplyLeading: false,
         backgroundColor: Colors.lightBlueAccent,
+        leading: GestureDetector(
+          child: Icon(Icons.arrow_back_ios),
+          onTap: () {
+            setState(
+              () {
+                store.minusStep();
+              },
+            );
+          },
+        ),
       ),
       body: pageList[store.bottomNavIndex],
       bottomNavigationBar: BottomNavigationBar(
@@ -253,6 +264,7 @@ class _FrameState extends State<Frame> {
         currentIndex: store.bottomNavIndex,
         onTap: (index) {
           setState(() {
+            store.resetStep();
             store.setBottomNavIndex(index);
           });
         },

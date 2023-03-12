@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:kariru/resultLibrary.dart';
+import 'package:kariru/store.dart';
+import 'package:provider/provider.dart';
 
 class Library extends StatefulWidget {
   const Library({Key? key}) : super(key: key);
@@ -57,7 +59,8 @@ class _LibraryStepState extends State<LibraryStep> {
 
   @override
   Widget build(BuildContext context) {
-    if (step == 0) {
+    final Store store = Provider.of<Store>(context, listen: true);
+    if (store.step == 0) {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 2.5),
         shrinkWrap: true,
@@ -66,18 +69,21 @@ class _LibraryStepState extends State<LibraryStep> {
           return Container(
             margin: EdgeInsets.fromLTRB(0, 1, 0, 1),
             padding: EdgeInsets.fromLTRB(0, 0, 0, 0.5),
-            child: Column(
+            child: Wrap(
+              alignment: WrapAlignment.spaceEvenly,
+              direction: Axis.horizontal,
+              runSpacing: 15,
               children: [
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: colorList[index % colorList.length],
-                    minimumSize: const Size.fromHeight(50), // NEW
+                    minimumSize: const Size.fromHeight(50),
                   ),
                   onPressed: () {
                     setState(() {
                       prefNum = '${index + 1}';
                       prefName = prefCityList[0]['${index + 1}']["name"];
-                      step++;
+                      store.plusStep();
                     });
                   },
                   child: Text(
@@ -90,7 +96,7 @@ class _LibraryStepState extends State<LibraryStep> {
           );
         },
       );
-    } else if (step == 1) {
+    } else if (store.step == 1) {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 2.5),
         shrinkWrap: true,
@@ -110,7 +116,7 @@ class _LibraryStepState extends State<LibraryStep> {
                     setState(() {
                       cityName =
                           prefCityList[0][prefNum]["city"][index]['city'];
-                      step++;
+                      store.plusStep();
                     });
                   },
                   child: Text(

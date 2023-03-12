@@ -4,6 +4,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:url_launcher/link.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:kariru/store.dart';
+import 'package:provider/provider.dart';
 
 class ResultLibrary extends StatefulWidget {
   const ResultLibrary({Key? key, this.prefName, this.cityName})
@@ -58,7 +60,6 @@ class LibraryList extends StatefulWidget {
 }
 
 class _LibraryListState extends State<LibraryList> {
-  int step = 0;
   bool bookPage = false;
   int libraryIndex = 0;
 
@@ -70,7 +71,8 @@ class _LibraryListState extends State<LibraryList> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.libraryData.isNotEmpty && step == 0 && bookPage == false) {
+    final Store store = Provider.of<Store>(context, listen: true);
+    if (widget.libraryData.isNotEmpty && store.step == 2 && bookPage == false) {
       return ListView.builder(
         padding: const EdgeInsets.symmetric(horizontal: 2.5),
         shrinkWrap: true,
@@ -80,7 +82,7 @@ class _LibraryListState extends State<LibraryList> {
             onTap: () {
               setState(() {
                 libraryIndex = index;
-                step++;
+                store.plusStep();
               });
             },
             child: Container(
@@ -136,7 +138,9 @@ class _LibraryListState extends State<LibraryList> {
           );
         },
       );
-    } else if (widget.libraryData.isNotEmpty && step == 1 && bookPage == false) {
+    } else if (widget.libraryData.isNotEmpty &&
+        store.step == 3 &&
+        bookPage == false) {
       return LibraryDetail(
         libraryData: widget.libraryData,
         libraryIndex: libraryIndex,
@@ -172,7 +176,6 @@ class _LibraryDetailState extends State<LibraryDetail> {
   List geocodeSplit = [];
   String latitude = "";
   String longitude = "";
-  int step = 0;
 
   getGecode() {
     setState(() {

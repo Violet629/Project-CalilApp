@@ -5,7 +5,6 @@ import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
 import 'package:kariru/resultLibrary.dart';
 import 'dart:convert';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LibraryGps extends StatefulWidget {
   const LibraryGps({Key? key}) : super(key: key);
@@ -15,7 +14,6 @@ class LibraryGps extends StatefulWidget {
 }
 
 class LibraryGpsState extends State<LibraryGps> {
-  // final Completer<GoogleMapController> _controller = Completer();
   String _latitude = "NoData";
   String _longitude = "NoData";
   String key = "419e52784761e9f60fa6683a2f28e41e";
