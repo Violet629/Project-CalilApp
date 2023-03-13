@@ -113,7 +113,6 @@ class _HomeMenuState extends State<HomeMenu> {
                   onPressed: () {
                     setState(
                       () {
-                        store.plus2Step();
                         store.setBottomNavIndex(1);
                       },
                     );

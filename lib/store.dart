@@ -7,7 +7,11 @@ class Store with ChangeNotifier {
   int step = 0;
 
   void setBottomNavIndex(payload) {
-    step = 0;
+    if (payload == 1) {
+      step = 2;
+    } else {
+      step = 0;
+    }
     bottomNavIndex = payload;
     notifyListeners();
   }
@@ -24,12 +28,6 @@ class Store with ChangeNotifier {
 
   void plusStep() {
     step++;
-    print(step);
-    notifyListeners();
-  }
-
-  void plus2Step() {
-    step = 2;
     print(step);
     notifyListeners();
   }
