@@ -6,6 +6,7 @@ import 'package:url_launcher/link.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:kariru/store.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ResultLibrary extends StatefulWidget {
   const ResultLibrary({Key? key, this.prefName, this.cityName})
@@ -175,6 +176,16 @@ class _LibraryDetailState extends State<LibraryDetail> {
     });
   }
 
+  saveLibrary(payload) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> myLibrary = prefs.getStringList('systemid') ??
+        []; // 저장된 리스트를 불러오고, 만약 저장된 리스트가 없으면 빈 리스트 생성
+    myLibrary.add(payload); // 새로운 아이템 추가
+    await prefs.setStringList('systemid', myLibrary); // 변경된 리스트를 다시 저장
+    var result = prefs.getStringList('systemid');
+    print(result);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -274,7 +285,10 @@ class _LibraryDetailState extends State<LibraryDetail> {
                     primary: Colors.lightBlueAccent,
                     minimumSize: const Size(330, 50),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    saveLibrary(
+                        widget.libraryData[widget.libraryIndex]['systemid']);
+                  },
                   child: const Text(
                     "お気に入り登録",
                     style: TextStyle(fontSize: 18),
