@@ -176,15 +176,20 @@ class _LibraryDetailState extends State<LibraryDetail> {
     });
   }
 
-  saveLibrary(payload) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    List<String> myLibrary = prefs.getStringList('systemid') ??
-        []; // 저장된 리스트를 불러오고, 만약 저장된 리스트가 없으면 빈 리스트 생성
-    myLibrary.add(payload); // 새로운 아이템 추가
-    await prefs.setStringList('systemid', myLibrary); // 변경된 리스트를 다시 저장
-    var result = prefs.getStringList('systemid');
-    print(result);
-  }
+  // saveLibrary(payload) async {
+  //   SharedPreferences prefs = await SharedPreferences.getInstance();
+  //   List<String> myList = prefs.getStringList('myListKey') ??
+  //       []; // 저장된 리스트를 불러오고, 만약 저장된 리스트가 없으면 빈 리스트 생성
+  //   String newItem = 'newItem'; // 새로 추가할 아이템
+  //   if (!myList.contains(newItem)) {
+  //     // 중복 여부 확인
+  //     myList.add(newItem); // 새로운 아이템 추가
+  //     await prefs.setStringList('myListKey', myList); // 변경된 리스트를 다시 저장
+  //   }
+  //
+  //   var result = prefs.getStringList('systemid');
+  //   print(result);
+  // }
 
   @override
   void initState() {
@@ -286,8 +291,8 @@ class _LibraryDetailState extends State<LibraryDetail> {
                     minimumSize: const Size(330, 50),
                   ),
                   onPressed: () {
-                    saveLibrary(
-                        widget.libraryData[widget.libraryIndex]['systemid']);
+                    // saveLibrary(
+                    //     widget.libraryData[widget.libraryIndex]['systemid']);
                   },
                   child: const Text(
                     "お気に入り登録",
